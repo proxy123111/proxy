@@ -15,9 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch(`https://global.cainiao.com/global/detail.json?mailNos=${req.body.mailNos}&lang=en-US`);
+    if (!req.query.mailNos) {
+        res.status(400).send();
+        return;
+    }
+    const response = yield fetch(`https://global.cainiao.com/global/detail.json?mailNos=${req.query.mailNos}&lang=en-US`);
     if (!response.headers.get('Content-Type') || response.headers.get('Content-Type').indexOf('text/html') !== -1) {
-        return res.status(429);
+        res.status(429).send();
+        return;
     }
     res.json(yield response.json());
 }));
+app.listen(3000, () => {
+    console.log('started server');
+});
