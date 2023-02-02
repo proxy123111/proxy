@@ -11,7 +11,7 @@ app.get("/", async (req: express.Request, res: express.Response) => {
     
     try {
         const response = await axios.get(`https://global.cainiao.com/global/detail.json?mailNos=${req.query.mailNos}&lang=en-US`);
-        if (!response.headers['Content-Type'] || response.headers['Content-Type'].toString().indexOf('text/html') !== -1) {
+        if (!response.headers['content-type'] || response.headers['content-type'].indexOf('text/html') !== -1) {
             res.status(429).send();
             return;
         }
